@@ -6,23 +6,23 @@ You can perform CRUD operations to interact with the endpoints below.
 ### CREATE
 
 - Method: POST
-- http://localhost:3000/books
+- https://bookstore-api-rpeg.onrender.com/books
 
 ### READ
 
 - Method: GET
-- http://localhost:3000/books/?page=0 (Each page returns 3 docs)
-- http://localhost:3000/books/bookId (To get 1 doc)
+- https://bookstore-api-rpeg.onrender.com/books/?page=0 (Each page returns 3 docs)
+- https://bookstore-api-rpeg.onrender.com/books/bookId (To get 1 doc)
 
 ### UPDATE
 
 - Method: PATCH
-- http://localhost:3000/books/bookId
+- https://bookstore-api-rpeg.onrender.com/books/bookId
 
 ### DELETE
 
 - Method: DELETE
-- http://localhost:3000/books/bookId
+- https://bookstore-api-rpeg.onrender.com/books/bookId
 
 ## Sample result
 

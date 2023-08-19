@@ -1,5 +1,6 @@
-# Bookstore API built to pratice MongoDB
+# Bookstore API
 
+Bookstore API built to pratice MongoDB.  
 You can perform CRUD operations to interact with the endpoints below.
 
 ### CREATE

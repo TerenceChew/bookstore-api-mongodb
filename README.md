@@ -1,6 +1,6 @@
 # Bookstore API
 
-Bookstore API built to pratice MongoDB.  
+A bookstore API built to practice MongoDB.  
 You can perform CRUD operations to interact with the endpoints below.
 
 ### CREATE

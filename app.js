@@ -83,19 +83,22 @@ app.post("/books", async (req, res) => {
   }
 });
 
-app.delete("/books/:id", (req, res) => {
-  const id = req.params.id;
+app.delete("/books/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
 
-  if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid book id" });
+    if (!ObjectId.isValid(id)) {
+      res.status(500).json({ errorMsg: "Invalid book id" });
+    }
+
+    const result = await db
+      .collection("books")
+      .deleteOne({ _id: new ObjectId(id) });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ errorMsg: "Failed to delete book", error });
   }
-
-  db.collection("books")
-    .deleteOne({ _id: new ObjectId(id) })
-    .then(result => res.status(200).json(result))
-    .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to delete book", error })
-    );
 });
 
 app.patch("/books/:id", (req, res) => {

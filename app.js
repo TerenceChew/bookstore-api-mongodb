@@ -55,7 +55,7 @@ app.get("/books/:id", (req, res) => {
   const id = req.params.id;
 
   if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid book id" });
+    return res.status(500).json({ errorMsg: "Invalid book id" });
   }
 
   db.collection("books")
@@ -88,7 +88,7 @@ app.delete("/books/:id", async (req, res) => {
     const id = req.params.id;
 
     if (!ObjectId.isValid(id)) {
-      res.status(500).json({ errorMsg: "Invalid book id" });
+      return res.status(500).json({ errorMsg: "Invalid book id" });
     }
 
     const result = await db

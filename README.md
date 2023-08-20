@@ -7,22 +7,6 @@ You can perform CRUD operations to interact with the endpoints below.
 
 - Method: POST
 - https://bookstore-api-rpeg.onrender.com/books
-- JSON object(s) must be placed in an array. Example of request body as below:
-
-```
-[
-    {
-        "title": "A Game of Thrones",
-        "pages": 695,
-        "author": "George R. R. Martin",
-        "genres": [
-            "epic fantasy",
-            "political fiction"
-        ],
-        "rating": 8
-    }
-]
-```
 
 ### READ
 

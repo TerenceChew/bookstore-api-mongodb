@@ -101,18 +101,33 @@ app.delete("/books/:id", async (req, res) => {
   }
 });
 
-app.patch("/books/:id", (req, res) => {
-  const id = req.params.id;
-  const updatesObj = req.body;
+app.patch("/books/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatesObj = req.body;
 
-  if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid book id" });
+    if (!ObjectId.isValid(id)) {
+      return res.status(500).json({ errorMsg: "Invalid book id" });
+    }
+
+    if (updatesObj.title) {
+      const existingBook = await db
+        .collection("books")
+        .findOne({ title: updatesObj.title });
+
+      if (existingBook) {
+        return res
+          .status(500)
+          .json({ errorMsg: "Failed to update book. Title already exist." });
+      }
+    }
+
+    const result = await db
+      .collection("books")
+      .updateOne({ _id: new ObjectId(id) }, { $set: updatesObj });
+
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ errorMsg: "Failed to update book", error });
   }
-
-  db.collection("books")
-    .updateOne({ _id: new ObjectId(id) }, { $set: updatesObj })
-    .then(result => res.status(200).json(result))
-    .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to update book", error })
-    );
 });

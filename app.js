@@ -55,40 +55,46 @@ app.get("/books/:id", (req, res) => {
   const id = req.params.id;
 
   if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid document id" });
+    res.status(500).json({ errorMsg: "Invalid book id" });
   }
 
   db.collection("books")
     .findOne({ _id: new ObjectId(id) })
     .then(doc => res.status(200).json(doc))
     .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to get document", error })
+      res.status(500).json({ errorMsg: "Failed to get book", error })
     );
 });
 
-app.post("/books", (req, res) => {
-  const book = req.body;
+app.post("/books", async (req, res) => {
+  try {
+    const book = req.body;
+    const existingBook = await db
+      .collection("books")
+      .findOne({ title: book.title });
 
-  db.collection("books")
-    .insertMany(book)
-    .then(result => res.status(201).json(result))
-    .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to insert document", error })
-    );
+    if (existingBook)
+      return res.status(500).json({ errorMsg: "Book already exist" });
+
+    const result = await db.collection("books").insertOne(book);
+    res.status(201).json(result);
+  } catch (error) {
+    res.status(500).json({ errorMsg: "Failed to insert book" }, error);
+  }
 });
 
 app.delete("/books/:id", (req, res) => {
   const id = req.params.id;
 
   if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid document id" });
+    res.status(500).json({ errorMsg: "Invalid book id" });
   }
 
   db.collection("books")
     .deleteOne({ _id: new ObjectId(id) })
     .then(result => res.status(200).json(result))
     .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to delete document", error })
+      res.status(500).json({ errorMsg: "Failed to delete book", error })
     );
 });
 
@@ -97,13 +103,13 @@ app.patch("/books/:id", (req, res) => {
   const updatesObj = req.body;
 
   if (!ObjectId.isValid(id)) {
-    res.status(500).json({ errorMsg: "Invalid document id" });
+    res.status(500).json({ errorMsg: "Invalid book id" });
   }
 
   db.collection("books")
     .updateOne({ _id: new ObjectId(id) }, { $set: updatesObj })
     .then(result => res.status(200).json(result))
     .catch(error =>
-      res.status(500).json({ errorMsg: "Failed to update document", error })
+      res.status(500).json({ errorMsg: "Failed to update book", error })
     );
 });
